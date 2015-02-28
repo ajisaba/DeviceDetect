@@ -166,7 +166,7 @@ class DeviceDetect {
 
     public function isSafari($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isIos($ua) || $this->isAndroid($ua)) {
+        if ($this->isIos($ua) || $this->isAndroid($ua) || $this->isChrome($ua)) {
             return false;
         } elseif (strpos($ua, 'Safari') !== false) {
             return true;
@@ -414,23 +414,132 @@ class DeviceDetect {
             return $this->getUnknownInfo();
         } elseif (preg_match('/(Willcom|DDIPOCKET)/i', $ua, $match)) {
             $name = strtolower($match[1]);
+        } else {
+            $name = '';
+        }
+        $this->setInfoType('willcom');
+        $this->setInfoName($name);
+        $this->setVersion('', '', '');
+        $info = $this->getInfo();
+        $this->clearInfo();
+        return $info;
+    }
+
+    public function getIeInfo($userAgent = null) {
+        $ua = $this->getUserAgent($userAgent);
+        if (!$this->isIe($ua)) {
+            return $this->getUnknownInfo();
+        } elseif (preg_match('/MSIE (\d+)\.(\d)/', $ua, $match)) {
+            $name = 'ie';
+            $major = $match[1];
+            $minor = $match[2];
+        } else {
+            $name = '';
             $major = '';
             $minor = '';
-            $etc = '';
+        } 
+        $etc = '';
+        $this->setInfoType('ie');
+        $this->setInfoName($name);
+        $this->setVersion($major, $minor, $etc);
+        $info = $this->getInfo();
+        $this->clearInfo();
+        return $info;
+    }
+
+    public function getChromeInfo($userAgent = null) {
+        $ua = $this->getUserAgent($userAgent);
+        if (!$this->isChrome($ua)) {
+            return $this->getUnknownInfo();
+        } elseif (preg_match('/Chrome\/(\d+)\.(\d+)\.(\d+(\.\d+)?)/', $ua, $match)) {
+            $name = 'chrome';
+            $major = $match[1];
+            $minor = $match[2];
+            $etc = $match[3];
         } else {
             $name = '';
             $major = '';
             $minor = '';
             $etc = '';
-        }
-        $type = 'willcom';
-        return array(
-            self::INFO_NAME => $name,
-            self::INFO_TYPE => $type,
-            self::INFO_VERSION_MAJOR => $major,
-            self::INFO_VERSION_MINOR => $minor,
-            self::INFO_VERSION_ETC => $etc,
-        );
+        } 
+        $this->setInfoType('chrome');
+        $this->setInfoName($name);
+        $this->setVersion($major, $minor, $etc);
+        $info = $this->getInfo();
+        $this->clearInfo();
+        return $info;
+    }
+
+    public function getFirefoxInfo($userAgent = null) {
+        $ua = $this->getUserAgent($userAgent);
+        if (!$this->isFirefox($ua)) {
+            return $this->getUnknownInfo();
+        } elseif (preg_match('/Firefox\/(\d+)\.(\d+)(\.(\d+))?/', $ua, $match)) {
+            $name = 'firefox';
+            $major = $match[1];
+            $minor = $match[2];
+            $etc = isset($match[4]) ? $match[4] : '';
+        } else {
+            $name = '';
+            $major = '';
+            $minor = '';
+            $etc = '';
+        } 
+        $this->setInfoType('firefox');
+        $this->setInfoName($name);
+        $this->setVersion($major, $minor, $etc);
+        $info = $this->getInfo();
+        $this->clearInfo();
+        return $info;
+    }
+
+    public function getSafariInfo($userAgent = null) {
+        $ua = $this->getUserAgent($userAgent);
+        if (!$this->isSafari($ua)) {
+            return $this->getUnknownInfo();
+        } elseif (preg_match('/Safari\/(\d+)\.(\d+)(\.(\d+))?/', $ua, $match)) {
+            $name = 'safari';
+            $major = $match[1];
+            $minor = $match[2];
+            $etc = isset($match[4]) ? $match[4] : '';
+        } else {
+            $name = '';
+            $major = '';
+            $minor = '';
+            $etc = '';
+        } 
+        $this->setInfoType('safari');
+        $this->setInfoName($name);
+        $this->setVersion($major, $minor, $etc);
+        $info = $this->getInfo();
+        $this->clearInfo();
+        return $info;
+    }
+
+    public function getOperaInfo($userAgent = null) {
+        $ua = $this->getUserAgent($userAgent);
+        if (!$this->isOpera($ua)) {
+            return $this->getUnknownInfo();
+        } elseif (preg_match('/Version\/(\d+)\.(\d+)/', $ua, $match)) {
+            $name = 'opera';
+            $major = $match[1];
+            $minor = $match[2];
+        } elseif (preg_match('/Opera (\d+)\.(\d+)/', $ua, $match)) {
+            $name = 'opera';
+            $major = $match[1];
+            $minor = $match[2];
+        } else {
+            $name = '';
+            $major = '';
+            $minor = '';
+        } 
+        $etc = '';
+        $this->setInfoType('opera');
+        $this->setInfoName($name);
+        $this->setVersion($major, $minor, $etc);
+        $info = $this->getInfo();
+        $this->clearInfo();
+        return $info;
     }
 
     public function getSmartPhoneInfo($userAgent = null) {
@@ -441,11 +550,14 @@ class DeviceDetect {
             return $this->getIosInfo($ua);
         } elseif ($this->isWindowsPhone($ua)) {
             return $this->getWindowsPhoneInfo($ua);
-        } else {
-            return array();
         }
+        return $this->getUnknownInfo(); 
     }
 
+    /**
+     * Returns the information of device type and version 
+     * for a Japanese mobile phone.
+     */
     public function getMobileInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if ($this->isDocomo($ua)) {
@@ -455,12 +567,31 @@ class DeviceDetect {
         } elseif ($this->isSoftbank($ua)) {
             return $this->getSoftbank($ua);
         }
-        return array();
+        return $this->getUnknownInfo(); 
     }
 
+    public function getPcBrowserInfo($userAgent = null) {
+        $ua = $this->getUserAgent($userAgent);
+        if ($this->isIe($ua)) {
+            return $this->getIeInfo($ua);
+        } elseif ($this->isChrome($ua)) {
+            return $this->getChromeInfo($ua);
+        } elseif ($this->isFirefox($ua)) {
+            return $this->getFirefoxInfo($ua);
+        } elseif ($this->isSafari($ua)) {
+            return $this->getSafariInfo($ua);
+        } elseif ($this->isOpera($ua)) {
+            return $this->getOperaInfo($ua);
+        }
+        return $this->getUnknownInfo(); 
+    }
+
+    /**
+     * Returns the information of devie type and version for a device.
+     *
+     */
     public function getDeviceInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-
         $info = $this->getSmartPhoneInfo($ua);
         if (!empty($info)) {
             return $info;
@@ -470,7 +601,12 @@ class DeviceDetect {
         if (!empty($info)) {
             return $info;
         }
-        return array();
+
+        $info = $this->getPcBrowserInfo($ua);
+        if (!empty($info)) {
+            return $info;
+        }
+        return null;
     }
 
     /**
@@ -501,6 +637,59 @@ class DeviceDetect {
         } elseif ($type == 'android') {
             if ($major >= 3) {
                 return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if device is enable to use FileAPI.
+     */
+    public function isEnableFileApi($userAgent = null) {
+        $ua = $this->getUserAgent($userAgent);
+        $info = $this->getSmartPhoneInfo($ua);
+        if (!empty($info)) {
+            $type = $info[self::INFO_TYPE];
+            $major = $info[self::INFO_VERSION_MAJOR];
+            if ($type == 'ios') {
+                if ($major >= 6) {
+                    return true;
+                }
+                return false;
+            } elseif ($type == 'android') {
+                if ($major >= 4) {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        $info = $this->getPcBrowserInfo($ua);
+        if (!empty($info)) {
+            $type = $info[self::INFO_TYPE];
+            $major = $info[self::INFO_VERSION_MAJOR];
+            if (empty($major)) {
+                return false;
+            }
+            if ($type == 'ie') {
+                if ($major >= 10) {
+                    return true;
+                }
+            } elseif ($type == 'chrome') {
+                if ($major >= 6) {
+                    return true;
+                }
+            } elseif ($type == 'firefox') {
+                if ($major >= 4) {
+                    return true;
+                } elseif ($major == 3) {
+                    $minor = $info[self::INFO_VERSION_MINOR];
+                    if (!empty($minor) && $minor >= 6) {
+                        return true;
+                    }
+                }  
             }
             return false;
         }

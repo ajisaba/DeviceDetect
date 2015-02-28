@@ -506,6 +506,183 @@ class DeviceDetectTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers DeviceDetect::getIeInfo
+     */
+    public function testGetIeInfo()
+    {
+        $ua = 'Mozilla/3.0(WILLCOM;SANYO/WX310SA/2;1/1/C128) NetFront/3.3';
+        $this->assertNull($this->object->getIeInfo($ua));
+
+        $ua = 'Mozilla/3.0 (DDIPOCKET;KYOCERA/AH-K3001V/1.5.2.8.000/0.1/C100) Opera 7.0';
+        $this->assertNull($this->object->getIeInfo($ua));
+
+        $ua = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Win64; x64; Trident/6.0)';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'ie',
+            DeviceDetect::INFO_NAME => 'ie', 
+            DeviceDetect::INFO_VERSION_MAJOR => 10,
+            DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => '',
+        );
+        $this->assertEquals($expect, $this->object->getIeInfo($ua));
+    }
+
+    /**
+     * @covers DeviceDetect::getChromeInfo
+     */
+    public function testGetChromeInfo()
+    {
+        $ua = 'Mozilla/3.0(WILLCOM;SANYO/WX310SA/2;1/1/C128) NetFront/3.3';
+        $this->assertNull($this->object->getChromeInfo($ua));
+
+        $ua = 'Mozilla/3.0 (DDIPOCKET;KYOCERA/AH-K3001V/1.5.2.8.000/0.1/C100) Opera 7.0';
+        $this->assertNull($this->object->getChromeInfo($ua));
+
+        $ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'chrome',
+            DeviceDetect::INFO_NAME => 'chrome', 
+            DeviceDetect::INFO_VERSION_MAJOR => 28,
+            DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => '1500.52',
+        );
+        $this->assertEquals($expect, $this->object->getChromeInfo($ua));
+
+        $ua = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/534.3 (KHTML, like Gecko) Chrome/6.0.472.55 Safari/534.3';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'chrome',
+            DeviceDetect::INFO_NAME => 'chrome', 
+            DeviceDetect::INFO_VERSION_MAJOR => 6,
+            DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => '472.55',
+        );
+        $this->assertEquals($expect, $this->object->getChromeInfo($ua));
+
+        $ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'chrome',
+            DeviceDetect::INFO_NAME => 'chrome', 
+            DeviceDetect::INFO_VERSION_MAJOR => 26,
+            DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => '1410.43',
+        );
+        $this->assertEquals($expect, $this->object->getChromeInfo($ua));
+    }
+
+    /**
+     * @covers DeviceDetect::getFirefoxInfo
+     */
+    public function testGetFirefoxInfo()
+    {
+        $ua = 'Mozilla/3.0(WILLCOM;SANYO/WX310SA/2;1/1/C128) NetFront/3.3';
+        $this->assertNull($this->object->getFirefoxInfo($ua));
+
+        $ua = 'Mozilla/3.0 (DDIPOCKET;KYOCERA/AH-K3001V/1.5.2.8.000/0.1/C100) Opera 7.0';
+        $this->assertNull($this->object->getFirefoxInfo($ua));
+
+        $ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36';
+        $this->assertNull($this->object->getFirefoxInfo($ua));
+
+        $ua = 'Mozilla/5.0 (Windows; U; Win98; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'firefox',
+            DeviceDetect::INFO_NAME => 'firefox', 
+            DeviceDetect::INFO_VERSION_MAJOR => 1,
+            DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => '',
+        );
+        $this->assertEquals($expect, $this->object->getFirefoxInfo($ua));
+
+        $ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:9.0.1) Gecko/20100101 Firefox/9.0.1';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'firefox',
+            DeviceDetect::INFO_NAME => 'firefox', 
+            DeviceDetect::INFO_VERSION_MAJOR => 9,
+            DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => 1,
+        );
+        $this->assertEquals($expect, $this->object->getFirefoxInfo($ua));
+    }
+
+    /**
+     * @covers DeviceDetect::getSafariInfo
+     */
+    public function testGetSafariInfo()
+    {
+        $ua = 'Mozilla/3.0(WILLCOM;SANYO/WX310SA/2;1/1/C128) NetFront/3.3';
+        $this->assertNull($this->object->getSafariInfo($ua));
+
+        $ua = 'Mozilla/5.0 (iPod; CPU iPhone OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A405 Safari/7534.48.3';
+        $this->assertNull($this->object->getSafariInfo($ua));
+
+        $ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36';
+        $this->assertNull($this->object->getSafariInfo($ua));
+
+        $ua = 'Mozilla/5.0 (Windows; U; Win98; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0';
+        $this->assertNull($this->object->getSafariInfo($ua));
+
+        // true
+        $ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/534.52.7 (KHTML, like Gecko) Version/5.1.2 Safari/534.52.7'; 
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'safari',
+            DeviceDetect::INFO_NAME => 'safari', 
+            DeviceDetect::INFO_VERSION_MAJOR => 534,
+            DeviceDetect::INFO_VERSION_MINOR => 52,
+            DeviceDetect::INFO_VERSION_ETC => 7,
+        );
+        $this->assertEquals($expect, $this->object->getSafariInfo($ua));
+
+        $ua = 'Mozilla/5.0 (Macintosh; U; PPC Mac OS X; ja-jp) AppleWebKit/85.7 (KHTML, like Gecko) Safari/85.6';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'safari',
+            DeviceDetect::INFO_NAME => 'safari', 
+            DeviceDetect::INFO_VERSION_MAJOR => 85,
+            DeviceDetect::INFO_VERSION_MINOR => 6,
+            DeviceDetect::INFO_VERSION_ETC => '',
+        );
+        $this->assertEquals($expect, $this->object->getSafariInfo($ua));
+    }
+
+    /**
+     * @covers DeviceDetect::getOperaInfo
+     */
+    public function testGetOperaInfo()
+    {
+        $ua = 'Mozilla/3.0(WILLCOM;SANYO/WX310SA/2;1/1/C128) NetFront/3.3';
+        $this->assertNull($this->object->getOperaInfo($ua));
+
+        $ua = 'Mozilla/5.0 (iPod; CPU iPhone OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A405 Safari/7534.48.3';
+        $this->assertNull($this->object->getOperaInfo($ua));
+
+        $ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.52 Safari/537.36';
+        $this->assertNull($this->object->getOperaInfo($ua));
+
+        $ua = 'Mozilla/5.0 (Windows; U; Win98; nl-NL; rv:1.7.5) Gecko/20041202 Firefox/1.0';
+        $this->assertNull($this->object->getOperaInfo($ua));
+
+        // true
+        $ua = 'Opera/9.80 (Macintosh; Intel Mac OS X; U; en) Presto/2.2.15 Version/10.00';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'opera',
+            DeviceDetect::INFO_NAME => 'opera', 
+            DeviceDetect::INFO_VERSION_MAJOR => 10,
+            DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => '',
+        );
+        $this->assertEquals($expect, $this->object->getOperaInfo($ua));
+
+        $ua = 'Mozilla/4.0 (Windows 95;US) Opera 3.62 [en]';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'opera',
+            DeviceDetect::INFO_NAME => 'opera', 
+            DeviceDetect::INFO_VERSION_MAJOR => 3,
+            DeviceDetect::INFO_VERSION_MINOR => 62,
+            DeviceDetect::INFO_VERSION_ETC => '',
+        );
+        $this->assertEquals($expect, $this->object->getOperaInfo($ua));
+    }
+
+    /**
      * @covers DeviceDetect::getSmartPhoneInfo
      */
     public function testGetSmartPhoneInfo()
@@ -560,5 +737,60 @@ class DeviceDetectTest extends PHPUnit_Framework_TestCase
 
         $ua = 'Mozilla/5.0 (Linux; U; Android 3.2; ja-jp; F-01D Build/F0001) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13';
         $this->assertEquals('android', $this->object->getDeviceType($ua));
+
+        $ua = 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0; Trident/5.0)';
+        $this->assertEquals('ie', $this->object->getDeviceType($ua));
+
+        $ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31';
+        $this->assertEquals('chrome', $this->object->getDeviceType($ua));
+
+        $ua = 'Mozilla/5.0 (Macintosh; U; PPC Mac OS X; ja-jp) AppleWebKit/85.7 (KHTML, like Gecko) Safari/85.6';
+        $this->assertEquals('safari', $this->object->getDeviceType($ua));
     }
+
+ 
+    /**
+     * @covers DeviceDetect::isEnableFileApi
+     */
+    public function testIsEnableFileApi()
+    {
+        // false
+        $ua = '';
+        $this->assertFalse($this->object->isEnableFileApi($ua));
+
+        $ua = 'DoCoMo';
+        $this->assertFalse($this->object->isEnableFileApi($ua));
+
+        $ua = 'DoCoMo/2.0 F901iC(c100;TB;W18H10)';
+        $this->assertFalse($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0; Trident/5.0)';
+        $this->assertFalse($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.55 Safari/533.4';
+        $this->assertFalse($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (Windows; U; Windows NT 6.0; ja; rv:1.9.0.17) Gecko/2009122116 Firefox/3.0.17 GTB6 (.NET CLR 3.5.30729)';
+        $this->assertFalse($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (Linux; U; Android 3.2; ja-jp; F-01D Build/F0001) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13';
+        $this->assertFalse($this->object->isEnableFileApi($ua));
+
+        // true
+        $ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A403 Safari/8536.25';
+        $this->assertTrue($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (Linux; U; Android 4.0.3; ja-jp; Sony Tablet S Build/TISU0R0110) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30';
+        $this->assertTrue($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Win64; x64; Trident/6.0)';
+        $this->assertTrue($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.43 Safari/534.7';
+        $this->assertTrue($this->object->isEnableFileApi($ua));
+
+        $ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.5; rv:2.0) Gecko/20100101 Firefox/4.0';
+        $this->assertTrue($this->object->isEnableFileApi($ua));
+    }
+
 }
