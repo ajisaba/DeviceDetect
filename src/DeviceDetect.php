@@ -1,22 +1,44 @@
 <?php
 /**
- * This is for detecting information of device from User Agent 
- * and is particulary optimized to Android and iOS.
+ * This is a simple php class for detecting information of device from user 
+ * agent and is particulary optimized to Android and iOS.
  * So it is not enough function for other devices, PC 
- * browsers, Japanese mobile devices t  
+ * browsers, Japanese mobile devices. 
  *
  * @author aji7saba@gmail.com
  *
  */
 class DeviceDetect {
+    /**
+     * Hash keys of returned information.
+     */
     const INFO_TYPE = 'type';
     const INFO_NAME = 'name';
+
+    // Major version number
     const INFO_VERSION_MAJOR = 'v_major';
+
+    // Minor version number
     const INFO_VERSION_MINOR = 'v_minor';
+
+    // Other version information of majar and minor
     const INFO_VERSION_ETC   = 'v_etc';
 
+    /**
+     * Device type for outputing device information.
+     * e.g.  ios 
+     */
     private $type;
+
+    /**
+     * Device name for outputing device information.
+     * e.g. iphone or ipad
+     */
     private $name;
+
+    /**
+     * Array for version information for outputing device information.
+     */ 
     private $version;
 
     /**
@@ -26,7 +48,10 @@ class DeviceDetect {
     }
 
     /**
-     * Returns string of User Agent.
+     * Returns a user ugent string.
+     *
+     * @param string $userAgent
+     * @return a user agent string.
      */
     public function getUserAgent($userAgent = null) {
         if (!is_null($userAgent)) {
@@ -38,14 +63,31 @@ class DeviceDetect {
         }
     }
 
+    /**
+     * Set a device type string for outputing device information.
+     *
+     * @param string $type  a device type string.  
+     */
     public function setInfoType($type) {
         $this->type = $type;
     }
 
+    /**
+     * Set a device name string for outputing device information.
+     *
+     * @param string $name  a device type name.  e.g. iphone, ipad
+     */
     public function setInfoName($name) {
         $this->name = $name;
     }
 
+    /**
+     * Set device version integer and string. for outputing device information.
+     *
+     * @param integer $major  a integer of major version.
+     * @param integer $mino   a integer of minor version. 
+     * @param string $tect    a other version string.
+     */
     public function setVersion($major, $minor, $etc) {
         $this->version = array(
             self::INFO_VERSION_MAJOR => $major,
@@ -54,6 +96,11 @@ class DeviceDetect {
         );
     }
 
+    /**
+     * Returns a array that has device type, name, and version information.
+     *
+     * @return array
+     */
     public function getInfo() {
         if (is_null($this->type)) {
             return null;
@@ -74,12 +121,21 @@ class DeviceDetect {
         );
     }
 
+    /**
+     * Clear class fields of outputing device information.
+     */
     public function clearInfo() {
         $this->type = null;
         $this->name = null;
         $this->version = null;
     }
 
+    /**
+     * Returns a device type string.
+     *
+     * @param array $info  device information
+     * @return string
+     */
     public function getInfoType($info = null) {
         if (empty($info)) {
             return '';
@@ -90,10 +146,12 @@ class DeviceDetect {
     }
 
     /**
-     * Return strings of device type from User Agent.
-     * Strings of the device type are all small chracters.
+     * Return a device type string. It consists of small characters.
      * e.g.  'ios', 'android', 'windows phone',
      *       'docomo', 'kddi', 'softbank'
+     *
+     * @param string $userAgent
+     * @return string
      */
     public function getDeviceType($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
@@ -106,6 +164,12 @@ class DeviceDetect {
         return '';
     }
 
+    /**
+     * Returns true if iOS.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isIos($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (preg_match('/(iPhone|iPad|iPod)/i', $ua)) {
@@ -114,6 +178,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Android.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isAndroid($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (strpos($ua, 'Android') !== false) {
@@ -122,6 +192,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Windows Phone.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isWindowsPhone($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (strpos($ua, 'Windows Phone') !== false) {
@@ -132,6 +208,9 @@ class DeviceDetect {
 
     /**
      * Returns true if IE(Internet Explore).
+     * 
+     * @param string $userAgent
+     * @return boolean 
      */
     public function isIe($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
@@ -145,6 +224,9 @@ class DeviceDetect {
 
     /**
      * Returns true If Google chrome.
+     * 
+     * @param string $userAgent
+     * @return boolean 
      */
     public function isChrome($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
@@ -156,6 +238,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Firefox.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isFirefox($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (strpos($ua, 'Firefox') !== false) {
@@ -164,6 +252,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Safari.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isSafari($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if ($this->isIos($ua) || $this->isAndroid($ua) || $this->isChrome($ua)) {
@@ -174,6 +268,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Opera.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isOpera($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (strpos($ua, 'Opera') !== false) {
@@ -182,6 +282,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Docomo phone.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isDocomo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (strpos($ua, 'DoCoMo') !== false) {
@@ -190,6 +296,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if KDDI phone.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isKddi($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (strpos($ua, 'KDDI') !== false) {
@@ -198,6 +310,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Softbank phone.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isSoftbank($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (preg_match('/(Softbank|Vodafone)/i', $ua)) {
@@ -206,6 +324,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Willcom phone.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isWillcom($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (preg_match('/(Willcom|DDIPOCKET)/i', $ua)) {
@@ -214,6 +338,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Japanese mobile phone.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isMobile($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if ($this->isDocomo($ua)) {
@@ -226,6 +356,12 @@ class DeviceDetect {
         return false;
     }
 
+    /**
+     * Returns true if Smart phone.
+     * 
+     * @param string $userAgent
+     * @return boolean 
+     */
     public function isSmartPhone($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if ($this->isIos($ua)) {
@@ -239,8 +375,10 @@ class DeviceDetect {
     }
 
     /**
-     * Returns true if Android or iOS.
+     * Returns true if Android.
      * 
+     * @param string $userAgent
+     * @return boolean 
      */
     public function isAndroidIos($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
@@ -253,12 +391,21 @@ class DeviceDetect {
     }
 
     /**
-     * Returns null if unknown device.
+     * Returns the information of unknown device.
+     *
+     * @return null
      */
     public function getUnknownInfo() {
         return null;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Android.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getAndroidInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isAndroid($ua)) {
@@ -280,6 +427,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of iOS.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getIosInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isIos($ua)) {
@@ -313,6 +467,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Windows Phone.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getWindowsPhoneInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isWindowsPhone($ua)) {
@@ -334,6 +495,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of DOCOMO mobile phone.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getDocomoInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isDocomo($ua)) {
@@ -362,6 +530,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of KDDI mobile phone.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getKddiInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isKddi($ua)) {
@@ -385,6 +560,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Softbank mobile phone.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getSoftbankInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isSoftbank($ua)) {
@@ -408,6 +590,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Willcom.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getWillcomInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isWillcom($ua)) {
@@ -425,6 +614,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of IE(Internet Explore).
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getIeInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isIe($ua)) {
@@ -447,6 +643,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Chrome.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getChromeInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isChrome($ua)) {
@@ -470,6 +673,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Firefox.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getFirefoxInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isFirefox($ua)) {
@@ -493,6 +703,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Safari.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getSafariInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isSafari($ua)) {
@@ -516,6 +733,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of Opera.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getOperaInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isOpera($ua)) {
@@ -542,6 +766,13 @@ class DeviceDetect {
         return $info;
     }
 
+    /**
+     * Returns the information of device type and version
+     * of smart phones.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getSmartPhoneInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if ($this->isAndroid($ua)) {
@@ -556,7 +787,10 @@ class DeviceDetect {
 
     /**
      * Returns the information of device type and version 
-     * for a Japanese mobile phone.
+     * of Japanese mobile phones.
+     *
+     * @param string $userAgent
+     * @return array
      */
     public function getMobileInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
@@ -570,6 +804,13 @@ class DeviceDetect {
         return $this->getUnknownInfo(); 
     }
 
+    /**
+     * Returns the information of device type and version 
+     * of PC browsers.
+     *
+     * @param string $userAgent
+     * @return array
+     */
     public function getPcBrowserInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
         if ($this->isIe($ua)) {
@@ -587,8 +828,10 @@ class DeviceDetect {
     }
 
     /**
-     * Returns the information of devie type and version for a device.
+     * Returns a array that has the information of devie type, name and version information.
      *
+     * @param string $userAgent
+     * @return array
      */
     public function getDeviceInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
@@ -612,6 +855,9 @@ class DeviceDetect {
     /**
      * If the device is enable to upload files by form, this returns true.
      * In the other case, this returns false.
+     *
+     * @param string $userAgent
+     * @return boolean
      */
     public function isEnableFileUpload($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
@@ -644,7 +890,10 @@ class DeviceDetect {
     }
 
     /**
-     * Returns true if device is enable to use FileAPI.
+     * Returns true if a device is enable to use FileAPI.
+     *
+     * @param string $userAgent
+     * @return boolean
      */
     public function isEnableFileApi($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
