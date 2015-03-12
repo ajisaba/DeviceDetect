@@ -63,6 +63,9 @@ class DeviceDetectTest extends PHPUnit_Framework_TestCase
         // iPad
         $ua = 'Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B367 Safari/531.21.10';
         $this->assertTrue($this->object->isIos($ua));
+
+        $ua = 'Mozilla/5.0 (iPod touch; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53';
+        $this->assertTrue($this->object->isIos($ua));
     }
 
     /**
@@ -390,6 +393,16 @@ class DeviceDetectTest extends PHPUnit_Framework_TestCase
             DeviceDetect::INFO_NAME => 'iphone', 
             DeviceDetect::INFO_VERSION_MAJOR => 8,
             DeviceDetect::INFO_VERSION_MINOR => 0,
+            DeviceDetect::INFO_VERSION_ETC => 2,
+        );
+        $this->assertEquals($expect, $this->object->getIosInfo($ua));
+
+        $ua = 'Mozilla/5.0 (iPod touch; CPU iPhone OS 7_1_2 like Mac OS X) AppleWebKit/537.51.2 (KHTML, like Gecko) Version/7.0 Mobile/11D257 Safari/9537.53';
+        $expect = array(
+            DeviceDetect::INFO_TYPE => 'ios',
+            DeviceDetect::INFO_NAME => 'ipod', 
+            DeviceDetect::INFO_VERSION_MAJOR => 7,
+            DeviceDetect::INFO_VERSION_MINOR => 1,
             DeviceDetect::INFO_VERSION_ETC => 2,
         );
         $this->assertEquals($expect, $this->object->getIosInfo($ua));

@@ -438,11 +438,11 @@ class DeviceDetect {
         $ua = $this->getUserAgent($userAgent);
         if (!$this->isIos($ua)) {
             return $this->getUnknownInfo();
-        } elseif (preg_match('/(iPhone|iPad|iPod);( U;)? CPU( iPhone)? OS (\d)_(\d)( |_(\d) )/', $ua, $match)) {
+        } elseif (preg_match('/(iPhone|iPad|iPod)( touch)?;( U;)? CPU( iPhone)? OS (\d)_(\d)( |_(\d) )/', $ua, $match)) {
             $name = strtolower($match[1]);
-            $major = $match[4];
-            $minor = $match[5];
-            $etc = isset($match[7]) ? $match[7] : 0;
+            $major = $match[5];
+            $minor = $match[6];
+            $etc = isset($match[8]) ? $match[8] : 0;
         } elseif (strpos($ua, 'iPhone; U; CPU like Mac')) {
             $name = 'iphone';
             $major = 1;
