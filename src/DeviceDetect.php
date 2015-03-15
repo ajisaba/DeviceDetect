@@ -26,12 +26,14 @@ class DeviceDetect {
 
     /**
      * Device type for outputing device information.
+     * This string uses only lower-case letters.
      * e.g.  ios 
      */
     private $type;
 
     /**
      * Device name for outputing device information.
+     * This string uses only lower-case letters.
      * e.g. iphone or ipad
      */
     private $name;
@@ -172,6 +174,10 @@ class DeviceDetect {
      */
     public function isIos($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isIos($ua);
+    }
+    
+    protected function _isIos($ua) {
         if (preg_match('/(iPhone|iPad|iPod)/i', $ua)) {
             return true;
         }
@@ -186,6 +192,10 @@ class DeviceDetect {
      */
     public function isAndroid($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isAndroid($ua);
+    }
+
+    protected function _isAndroid($ua) {
         if (strpos($ua, 'Android') !== false) {
             return true;
         }
@@ -200,6 +210,10 @@ class DeviceDetect {
      */
     public function isWindowsPhone($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isWindowsPhone($ua);
+    }
+
+    protected function _isWindowsPhone($ua) {
         if (strpos($ua, 'Windows Phone') !== false) {
             return true;
         }
@@ -214,7 +228,11 @@ class DeviceDetect {
      */
     public function isIe($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isWindowsPhone($ua)) {
+        return $this->_isIe($ua);
+    }
+  
+    protected function _isIe($ua) {
+        if ($this->_isWindowsPhone($ua)) {
             return false;
         } elseif (strpos($ua, 'MSIE') !== false) {
             return true;
@@ -230,7 +248,11 @@ class DeviceDetect {
      */
     public function isChrome($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isAndroid($ua)) {
+        return $this->_isChrome($ua);
+    }
+
+    protected function _isChrome($ua) {
+        if ($this->_isAndroid($ua)) {
             return false;
         } elseif (strpos($ua, 'Chrome') !== false) {
             return true;
@@ -246,6 +268,10 @@ class DeviceDetect {
      */
     public function isFirefox($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isFirefox($ua);
+    }
+
+    protected function _isFirefox($ua) {
         if (strpos($ua, 'Firefox') !== false) {
             return true;
         }
@@ -260,7 +286,11 @@ class DeviceDetect {
      */
     public function isSafari($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isIos($ua) || $this->isAndroid($ua) || $this->isChrome($ua)) {
+        return $this->_isSafari($ua);
+    }
+
+    protected function _isSafari($ua) {
+        if ($this->_isIos($ua) || $this->_isAndroid($ua) || $this->_isChrome($ua)) {
             return false;
         } elseif (strpos($ua, 'Safari') !== false) {
             return true;
@@ -276,6 +306,10 @@ class DeviceDetect {
      */
     public function isOpera($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isOpera($ua);
+    }
+
+    protected function _isOpera($ua) {
         if (strpos($ua, 'Opera') !== false) {
             return true;
         }
@@ -290,6 +324,10 @@ class DeviceDetect {
      */
     public function isDocomo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isDocomo($ua);
+    }
+
+    protected function _isDocomo($ua) {
         if (strpos($ua, 'DoCoMo') !== false) {
             return true;
         }
@@ -304,6 +342,10 @@ class DeviceDetect {
      */
     public function isKddi($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isKddi($ua);
+    }
+
+    protected function _isKddi($ua) {
         if (strpos($ua, 'KDDI') !== false) {
             return true;
         }
@@ -318,6 +360,10 @@ class DeviceDetect {
      */
     public function isSoftbank($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isSoftbank($ua);
+    }
+
+    protected function _isSoftbank($ua) {
         if (preg_match('/(Softbank|Vodafone)/i', $ua)) {
             return true;
         }
@@ -332,6 +378,10 @@ class DeviceDetect {
      */
     public function isWillcom($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
+        return $this->_isWillcom($ua);
+    }
+
+    protected function _isWillcom($ua) {
         if (preg_match('/(Willcom|DDIPOCKET)/i', $ua)) {
             return true;
         }
@@ -346,11 +396,15 @@ class DeviceDetect {
      */
     public function isMobile($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isDocomo($ua)) {
+        return $this->_isMobile($ua);
+    }
+
+    protected function _isMobile($ua) {
+        if ($this->_isDocomo($ua)) {
             return true;
-        } elseif ($this->isKddi($ua)) {
+        } elseif ($this->_isKddi($ua)) {
             return true;
-        } elseif ($this->isSoftbank($ua)) {
+        } elseif ($this->_isSoftbank($ua)) {
             return true;
         }
         return false;
@@ -364,11 +418,15 @@ class DeviceDetect {
      */
     public function isSmartPhone($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isIos($ua)) {
+        return $this->_isSmartPhone($ua);
+    }
+
+    protected function _isSmartPhone($ua) {
+        if ($this->_isIos($ua)) {
             return true;
-        } elseif ($this->isAndroid($ua)) {
+        } elseif ($this->_isAndroid($ua)) {
             return true;
-        } elseif ($this->isWindowsPhone($ua)) {
+        } elseif ($this->_isWindowsPhone($ua)) {
             return true;
         }
         return false;
@@ -382,9 +440,13 @@ class DeviceDetect {
      */
     public function isAndroidIos($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isIos($ua)) {
+        return $this->_isAndroidIos($ua);
+    }
+
+    protected function _isAndroidIos($ua) {
+        if ($this->_isIos($ua)) {
             return true;
-        } elseif ($this->isAndroid($ua)) {
+        } elseif ($this->_isAndroid($ua)) {
             return true;
         }
         return false;
@@ -408,7 +470,11 @@ class DeviceDetect {
      */
     public function getAndroidInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isAndroid($ua)) {
+        return $this->_getAndroidInfo($ua);
+    }
+
+    protected function _getAndroidInfo($ua) {
+        if (!$this->_isAndroid($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/Android (\d)\.(\d)(\.(\d))?/i', $ua, $match)) {
             $major = $match[1];
@@ -436,7 +502,11 @@ class DeviceDetect {
      */
     public function getIosInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isIos($ua)) {
+        return $this->_getIosInfo($ua);
+    }
+
+    protected function _getIosInfo($ua) {
+        if (!$this->_isIos($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/(iPhone|iPad|iPod)( touch)?;( U;)? CPU( iPhone)? OS (\d)_(\d)( |_(\d) )/', $ua, $match)) {
             $name = strtolower($match[1]);
@@ -476,7 +546,11 @@ class DeviceDetect {
      */
     public function getWindowsPhoneInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isWindowsPhone($ua)) {
+        return $this->_getWindowsPhoneInfo($ua);
+    }
+
+    protected function _getWindowsPhoneInfo($ua) {
+        if (!$this->_isWindowsPhone($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/Windows Phone( OS)? (\d)\.(\d)(\.(\d))?/i', $ua, $match)) {
             $major = $match[2];
@@ -504,7 +578,11 @@ class DeviceDetect {
      */
     public function getDocomoInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isDocomo($ua)) {
+        return $this->_getDocomoInfo($ua);
+    }
+
+    protected function _getDocomoInfo($ua) {
+        if (!$this->_isDocomo($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/DoCoMo\/(\d)\.(\d)\/(\w+)\//', $ua, $match)) {
             $name = strtolower($match[3]);
@@ -539,7 +617,11 @@ class DeviceDetect {
      */
     public function getKddiInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isKddi($ua)) {
+        return $this->_getKddiInfo($ua);
+    }
+
+    protected function _getKddiInfo($ua) {
+        if (!$this->_isKddi($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/KDDI-(\w+) (.*)\/(\d)\.(\d)\.(\d)/i', $ua, $match)) {
             $name = strtolower($match[1]);
@@ -569,7 +651,11 @@ class DeviceDetect {
      */
     public function getSoftbankInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isSoftbank($ua)) {
+        return $this->_getSoftbankInfo($ua);
+    }
+
+    protected function _getSoftbankInfo($ua) {
+        if (!$this->_isSoftbank($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/(SoftBank|Vodafone)\/(\d)\.(\d)\/(\w+)\//i', $ua, $match)) {
             $name = strtolower($match[4]);
@@ -599,7 +685,11 @@ class DeviceDetect {
      */
     public function getWillcomInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isWillcom($ua)) {
+        return $this->_getWillcomInfo($ua);
+    }
+
+    protected function _getWillcomInfo($ua) {
+        if (!$this->_isWillcom($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/(Willcom|DDIPOCKET)/i', $ua, $match)) {
             $name = strtolower($match[1]);
@@ -623,7 +713,11 @@ class DeviceDetect {
      */
     public function getIeInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isIe($ua)) {
+        return $this->_getIeInfo($ua);
+    }
+
+    protected function _getIeInfo($ua = null) {
+        if (!$this->_isIe($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/MSIE (\d+)\.(\d)/', $ua, $match)) {
             $name = 'ie';
@@ -652,7 +746,11 @@ class DeviceDetect {
      */
     public function getChromeInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isChrome($ua)) {
+        return $this->_getChromeInfo($ua);
+    }
+
+    protected function _getChromeInfo($ua) {
+        if (!$this->_isChrome($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/Chrome\/(\d+)\.(\d+)\.(\d+(\.\d+)?)/', $ua, $match)) {
             $name = 'chrome';
@@ -682,7 +780,11 @@ class DeviceDetect {
      */
     public function getFirefoxInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isFirefox($ua)) {
+        return $this->_getFirefoxInfo($ua);
+    }
+
+    protected function _getFirefoxInfo($ua) {
+        if (!$this->_isFirefox($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/Firefox\/(\d+)\.(\d+)(\.(\d+))?/', $ua, $match)) {
             $name = 'firefox';
@@ -712,7 +814,11 @@ class DeviceDetect {
      */
     public function getSafariInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isSafari($ua)) {
+        return $this->_getSafariInfo($ua);
+    }
+
+    protected function _getSafariInfo($ua) {
+        if (!$this->_isSafari($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/Safari\/(\d+)\.(\d+)(\.(\d+))?/', $ua, $match)) {
             $name = 'safari';
@@ -742,7 +848,11 @@ class DeviceDetect {
      */
     public function getOperaInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if (!$this->isOpera($ua)) {
+        return $this->_getOperaInfo($ua);
+    }
+
+    protected function _getOperaInfo($ua) {
+        if (!$this->_isOpera($ua)) {
             return $this->getUnknownInfo();
         } elseif (preg_match('/Version\/(\d+)\.(\d+)/', $ua, $match)) {
             $name = 'opera';
@@ -775,12 +885,16 @@ class DeviceDetect {
      */
     public function getSmartPhoneInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isAndroid($ua)) {
-            return $this->getAndroidInfo($ua);
-        } elseif ($this->isIos($ua)) {
-            return $this->getIosInfo($ua);
-        } elseif ($this->isWindowsPhone($ua)) {
-            return $this->getWindowsPhoneInfo($ua);
+        return $this->_getSmartPhoneInfo($ua);
+    }
+
+    protected function _getSmartPhoneInfo($ua) {
+        if ($this->_isAndroid($ua)) {
+            return $this->_getAndroidInfo($ua);
+        } elseif ($this->_isIos($ua)) {
+            return $this->_getIosInfo($ua);
+        } elseif ($this->_isWindowsPhone($ua)) {
+            return $this->_getWindowsPhoneInfo($ua);
         }
         return $this->getUnknownInfo(); 
     }
@@ -794,12 +908,16 @@ class DeviceDetect {
      */
     public function getMobileInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isDocomo($ua)) {
-            return $this->getDocomoInfo($ua);
-        } elseif ($this->isKddi($ua)) {
-            return $this->getKddiInfo($ua);
-        } elseif ($this->isSoftbank($ua)) {
-            return $this->getSoftbank($ua);
+        return $this->_getMobileInfo($ua);
+    }
+
+    protected function _getMobileInfo($ua) {
+        if ($this->_isDocomo($ua)) {
+            return $this->_getDocomoInfo($ua);
+        } elseif ($this->_isKddi($ua)) {
+            return $this->_getKddiInfo($ua);
+        } elseif ($this->_isSoftbank($ua)) {
+            return $this->_getSoftbank($ua);
         }
         return $this->getUnknownInfo(); 
     }
@@ -813,16 +931,20 @@ class DeviceDetect {
      */
     public function getPcBrowserInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isIe($ua)) {
-            return $this->getIeInfo($ua);
-        } elseif ($this->isChrome($ua)) {
-            return $this->getChromeInfo($ua);
-        } elseif ($this->isFirefox($ua)) {
-            return $this->getFirefoxInfo($ua);
-        } elseif ($this->isSafari($ua)) {
-            return $this->getSafariInfo($ua);
-        } elseif ($this->isOpera($ua)) {
-            return $this->getOperaInfo($ua);
+        return $this->_getPcBrowserInfo($ua);
+    }
+
+    protected function _getPcBrowserInfo($ua) {
+        if ($this->_isIe($ua)) {
+            return $this->_getIeInfo($ua);
+        } elseif ($this->_isChrome($ua)) {
+            return $this->_getChromeInfo($ua);
+        } elseif ($this->_isFirefox($ua)) {
+            return $this->_getFirefoxInfo($ua);
+        } elseif ($this->_isSafari($ua)) {
+            return $this->_getSafariInfo($ua);
+        } elseif ($this->_isOpera($ua)) {
+            return $this->_getOperaInfo($ua);
         }
         return $this->getUnknownInfo(); 
     }
@@ -835,17 +957,17 @@ class DeviceDetect {
      */
     public function getDeviceInfo($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        $info = $this->getSmartPhoneInfo($ua);
+        $info = $this->_getSmartPhoneInfo($ua);
         if (!empty($info)) {
             return $info;
         }
 
-        $info = $this->getMobileInfo($ua);
+        $info = $this->_getMobileInfo($ua);
         if (!empty($info)) {
             return $info;
         }
 
-        $info = $this->getPcBrowserInfo($ua);
+        $info = $this->_getPcBrowserInfo($ua);
         if (!empty($info)) {
             return $info;
         }
@@ -861,13 +983,13 @@ class DeviceDetect {
      */
     public function isEnableFileUpload($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        if ($this->isMobile($ua)) {
+        if ($this->_isMobile($ua)) {
             return false;
         }
-        if ($this->isWillcom($ua)) {
+        if ($this->_isWillcom($ua)) {
             return false;
         }
-        $info = $this->getSmartPhoneInfo($ua);
+        $info = $this->_getSmartPhoneInfo($ua);
         if (empty($info)) {
             // Others except mobile and smart phone. 
             return false;
@@ -897,7 +1019,7 @@ class DeviceDetect {
      */
     public function isEnableFileApi($userAgent = null) {
         $ua = $this->getUserAgent($userAgent);
-        $info = $this->getSmartPhoneInfo($ua);
+        $info = $this->_getSmartPhoneInfo($ua);
         if (!empty($info)) {
             $type = $info[self::INFO_TYPE];
             $major = $info[self::INFO_VERSION_MAJOR];
@@ -915,7 +1037,7 @@ class DeviceDetect {
             return false;
         }
 
-        $info = $this->getPcBrowserInfo($ua);
+        $info = $this->_getPcBrowserInfo($ua);
         if (!empty($info)) {
             $type = $info[self::INFO_TYPE];
             $major = $info[self::INFO_VERSION_MAJOR];
