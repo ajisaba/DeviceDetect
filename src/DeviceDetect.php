@@ -346,7 +346,10 @@ class DeviceDetect {
     }
 
     protected function _isKddi($ua) {
-        if (strpos($ua, 'KDDI') !== false) {
+        if ($this->_isWindowsPhone($ua)) {
+            // IS12T
+            return false;
+        } elseif (strpos($ua, 'KDDI') !== false) {
             return true;
         }
         return false;

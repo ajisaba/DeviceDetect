@@ -100,6 +100,9 @@ class DeviceDetectTest extends PHPUnit_Framework_TestCase
         // true
         $ua = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; KDDI-TS01; Windows Phone 6.5.3.5)';
         $this->assertTrue($this->object->isWindowsPhone($ua));
+        
+        $ua = 'Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; FujitsuToshibaMobileCommun; IS12T; KDDI)';
+        $this->assertTrue($this->object->isWindowsPhone($ua));
     }
 
     /**
@@ -229,6 +232,9 @@ class DeviceDetectTest extends PHPUnit_Framework_TestCase
         $ua = 'DoCoMo/2.0 F901iC(c100;TB;W18H10)';
         $this->assertFalse($this->object->isKddi($ua));
 
+        $ua = 'Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; FujitsuToshibaMobileCommun; IS12T; KDDI)';
+        $this->assertFalse($this->object->isKddi($ua));
+        
         // true
         $ua = 'KDDI-HI31 UP.Browser/6.2.0.5.c.1.100 (GUI) MMP/2.0';
         $this->assertTrue($this->object->isKddi($ua));
