@@ -34,14 +34,14 @@ class DeviceDetectTest extends PHPUnit_Framework_TestCase
     public function testGetUserAgent()
     {
         $ua = 'Mozilla/5.0 (iPhone; CPU iPhone OS 5_1_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9B206 Safari/7534.48.3';
-        $_SERVER['USER_AGENT'] = $ua;
+        $_SERVER['HTTP_USER_AGENT'] = $ua;
         $this->assertEquals($ua, $this->object->getUserAgent());
 
         $other = 'Mozilla/5.0 (Linux; U; Android 3.2; ja-jp; F-01D Build/F0001) AppleWebKit/534.13 (KHTML, like Gecko) Version/4.0 Safari/534.13';
         $this->assertEquals($other, $this->object->getUserAgent($other));
 
         $this->assertEquals($ua, $this->object->getUserAgent());
-        unset($_SERVER['USER_AGENT']);
+        unset($_SERVER['HTTP_USER_AGENT']);
     }
 
     /**

@@ -58,8 +58,8 @@ class DeviceDetect {
     public function getUserAgent($userAgent = null) {
         if (!is_null($userAgent)) {
             return $userAgent;
-        } elseif (isset($_SERVER['USER_AGENT'])) {
-            return $_SERVER['USER_AGENT'];
+        } elseif (isset($_SERVER['HTTP_USER_AGENT'])) {
+            return $_SERVER['HTTP_USER_AGENT'];
         } else {
             return '';
         }
