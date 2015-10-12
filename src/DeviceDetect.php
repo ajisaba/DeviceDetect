@@ -1,4 +1,7 @@
 <?php
+
+namespace Ajisaba\DeviceDetect;
+
 /**
  * This is a simple php class for detecting information of device from user 
  * agent and is particulary optimized to Android and iOS.
